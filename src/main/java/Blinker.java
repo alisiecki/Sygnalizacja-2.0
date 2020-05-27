@@ -23,35 +23,53 @@ public class Blinker {
 
 
         if(number==0){
+
             try {
                 port.writeInt(0x34);
-                Console.frame.getContentPane().setBackground(Color.green);
-                Thread.sleep(1000);
-                port.writeInt(0x33);
-                Console.frame.getContentPane().setBackground(szary);
-
             } catch (SerialPortException e) {
                 e.printStackTrace();
+            }
+            Console.frame.getContentPane().setBackground(Color.red);
+
+
+            try {
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            try {
+                port.writeInt(0x33);
+            } catch (SerialPortException e) {
+                e.printStackTrace();
+            }
+            Console.frame.getContentPane().setBackground(szary);
 
         }
 
 
         if(number==1){
+
             try {
                 port.writeInt(0x31);
-                Console.frame.getContentPane().setBackground(Color.green);
-                Thread.sleep(1000);
-                port.writeInt(0x30);
-                Console.frame.getContentPane().setBackground(szary);
-
             } catch (SerialPortException e) {
                 e.printStackTrace();
+            }
+            Console.frame.getContentPane().setBackground(Color.green);
+
+
+            try {
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            try {
+                port.writeInt(0x30);
+            } catch (SerialPortException e) {
+                e.printStackTrace();
+            }
+            Console.frame.getContentPane().setBackground(szary);
 
         }
 
