@@ -13,6 +13,9 @@ public class ScreenshotChecker {
     PixelSearcher pixelSearcher;
     Blinker blinker;
 
+    boolean isTimerRun = false;
+
+
 
     public ScreenshotChecker(){
 
@@ -38,12 +41,17 @@ public class ScreenshotChecker {
 
 
     public void run(){
-        timer = new Timer();
-        timer.schedule(new ScreenshootCheckerTimerTask(),0,2000);
+        if (isTimerRun==false){
+            timer = new Timer();
+            timer.schedule(new ScreenshootCheckerTimerTask(),0,2000);
+            isTimerRun=true;
+        }
+
     }
 
     public void stop(){
         timer.cancel();
+        isTimerRun=false;
     }
 
 

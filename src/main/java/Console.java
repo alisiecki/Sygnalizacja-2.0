@@ -95,7 +95,7 @@ public class Console {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                screenshotChecker=new ScreenshotChecker(); //upewnij sie ze nie mozesz tego kliknac wiecej niz raz
+                screenshotChecker=new ScreenshotChecker();
                 screenshotChecker.run();
             }
 
