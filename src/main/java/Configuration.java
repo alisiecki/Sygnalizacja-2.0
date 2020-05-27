@@ -9,6 +9,7 @@ public class Configuration {
 
 
     static int x_start, y_start, width, height;
+    static String port;
 
 
 
@@ -30,7 +31,7 @@ public class Configuration {
         this.y_start=Integer.parseInt(prop.getProperty("y_start"));
         this.width =Integer.parseInt(prop.getProperty("cropped_width"));
         this.height =Integer.parseInt(prop.getProperty("cropped_height"));
-
+        this.port = prop.getProperty("port");
 
 
 

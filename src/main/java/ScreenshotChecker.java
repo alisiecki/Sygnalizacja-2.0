@@ -32,7 +32,6 @@ public class ScreenshotChecker {
 
             //zamrugajOdpowiednio //przeszukajScreenshoot  //takeScreenshoot
             blinker.mrugaj(pixelSearcher.przeszukajScreenshot(sm.takeScreenshot()));
-            System.out.println("Pyk");
 
         }
     }
