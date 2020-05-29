@@ -1,4 +1,4 @@
-
+package Main;
 
 import java.awt.EventQueue;
 import javax.swing.*;
@@ -14,17 +14,18 @@ public class Console {
 
     Language language;
     Configuration configuration;
+    ScreenshotChecker screenshotChecker;
 
-    static JFrame frame;
-    static JLabel lb;
-    static JLabel temperature;
+    public static JFrame frame;
+    public static JLabel lb;
+    public static JLabel temperature;
     private JMenuBar menuBar;
     private Button buttonRun;
     private Button buttonAbout;
     private Button buttonPorts;
     private Button buttonSavePosition;
 
-    ScreenshotChecker screenshotChecker;
+
 
 
 
@@ -48,6 +49,7 @@ public class Console {
 
         configuration = new Configuration();
         language = new Language();
+        screenshotChecker=new ScreenshotChecker();
 
         initialize();
 
@@ -95,7 +97,6 @@ public class Console {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                screenshotChecker=new ScreenshotChecker();
                 screenshotChecker.run();
             }
 

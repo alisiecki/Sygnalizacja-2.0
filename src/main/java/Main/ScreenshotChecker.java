@@ -1,9 +1,12 @@
+package Main;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+
 import ThermoModules.PixelSearcher;
 import ThermoModules.WhitePixelSearcher;
+
 
 
 public class ScreenshotChecker {
@@ -21,6 +24,8 @@ public class ScreenshotChecker {
 
       sm = new ScreenshotMaker();
       pixelSearcher = new WhitePixelSearcher();
+
+
       blinker = new Blinker();
 
 

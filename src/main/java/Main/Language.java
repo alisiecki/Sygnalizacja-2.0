@@ -1,3 +1,5 @@
+package Main;
+
 public class Language {
 
     String APP_TITLE = "Sygnalizacja";
