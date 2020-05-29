@@ -17,6 +17,7 @@ public class ScreenshotChecker {
     Blinker blinker;
 
     boolean isTimerRun = false;
+    int iterator_for_working_text=0;
 
 
 
@@ -24,11 +25,7 @@ public class ScreenshotChecker {
 
       sm = new ScreenshotMaker();
       pixelSearcher = new WhitePixelSearcher();
-
-
       blinker = new Blinker();
-
-
 
     }
 
@@ -40,6 +37,7 @@ public class ScreenshotChecker {
 
             //zamrugajOdpowiednio //przeszukajScreenshoot  //takeScreenshoot
             blinker.mrugaj(pixelSearcher.przeszukajScreenshot(sm.takeScreenshot()));
+            showThatProgramIsRunning();
 
         }
     }
@@ -57,6 +55,33 @@ public class ScreenshotChecker {
     public void stop(){
         timer.cancel();
         isTimerRun=false;
+    }
+
+
+    public void showThatProgramIsRunning(){
+
+        
+        switch(iterator_for_working_text%4) {
+            case 0:
+                Console.lb.setText("working");
+                iterator_for_working_text++;
+                break;
+            case 1:
+                Console.lb.setText("working.");
+                iterator_for_working_text++;
+                break;
+            case 2:
+                Console.lb.setText("working..");
+                iterator_for_working_text++;
+                break;
+            case 3:
+                Console.lb.setText("working...");
+                iterator_for_working_text++;
+                break;
+
+        }
+
+
     }
 
 
