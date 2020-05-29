@@ -60,7 +60,7 @@ public class ScreenshotChecker {
 
     public void showThatProgramIsRunning(){
 
-        
+
         switch(iterator_for_working_text%4) {
             case 0:
                 Console.lb.setText("working");

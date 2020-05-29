@@ -1,12 +1,14 @@
 package Main;
 
-import java.awt.EventQueue;
+import jssc.SerialPortList;
+
+import java.awt.*;
 import javax.swing.*;
-import java.awt.Button;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Font;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 
 public class Console {
@@ -123,7 +125,14 @@ public class Console {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                JFrame f=new JFrame();
+                // getting serial ports list into the array
+                String[] portNames = SerialPortList.getPortNames();
 
+                if (portNames.length == 0)
+                    JOptionPane.showMessageDialog(f,"There are no serial-ports :( You can use an emulator, such ad VSPE, to create a virtual serial port.");
+                else
+                    JOptionPane.showMessageDialog(f,portNames);
             }
 
         });
@@ -135,6 +144,20 @@ public class Console {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                Properties prop = new Properties();
+                Rectangle r = frame.getBounds();
+
+                prop.setProperty("x_start", String.valueOf(r.x));
+                prop.setProperty("y_start", String.valueOf(r.y));
+                prop.setProperty("cropped_height", String.valueOf(r.height));
+                prop.setProperty("cropped_weight", String.valueOf(r.width));
+                prop.setProperty("precision", "+/- 10px");
+
+                try {
+                    prop.store(new FileOutputStream("./bin/newScanPosition.properties"),null);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
 
             }
 
