@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 
-//Miarka czerwnoo-żółta.
+//Miarka czerwono-żółta.
 //Znajdowanie najbardziej czerwonego pixela w obrazie, obliczanie średniej z poprzednich wyników, screenshoty, zapis danych RGB do txt, 
 //konwertowanie wartości pixelowej na wartość temperaturową. Aktualnie brak wysyłania sygnałów 0,1 do Blinkera.
 
@@ -54,11 +54,11 @@ public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
     public MaxRedLowestGreenPixelSearcher(){
 
         mycolor=null;
-	average=0.0; //unikniecie NullPointException
-	howManySamplesForAverage=7;
-	q = new LinkedList<>();
-	df = new DecimalFormat("0.00");
-	iterator_for_isManFound_screenshots=0;
+	    average=0.0; //unikniecie NullPointException
+	    howManySamplesForAverage=7;
+	    q = new LinkedList<>();
+	    df = new DecimalFormat("0.00");
+	    iterator_for_isManFound_screenshots=0;
 
 
     }
