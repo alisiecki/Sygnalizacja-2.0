@@ -24,7 +24,7 @@ Opis klas:
 @UtilitiesManager - Klasa odpowiadająca za machanizm średniej oraz zapis danych do pliku.
 
 
-Blinker - klasa obsługująca połączenie z przekaźnikiem AVT (urządzeniem sygnalizacyjnym).
+Blinker - Klasa obsługująca połączenie z przekaźnikiem AVT (urządzeniem sygnalizacyjnym).
 
 Configuration - Klasa importująca ustawienia początkowe tj. lokalizacja obrazu, rozmiar, port USB.
 
