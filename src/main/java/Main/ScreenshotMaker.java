@@ -3,6 +3,9 @@ package Main;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+
+//Moduł obsługujący proces tworzenia zrzutu ekranu o odpowiednich parametrach lokalizacji oraz rozmiaru.
+
 public class ScreenshotMaker {
 
     Robot rb;
@@ -23,7 +26,7 @@ public class ScreenshotMaker {
         screenRect= new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
 
 
-        this.x_start=Configuration.x_start;
+        this.x_start= Configuration.x_start;
         this.y_start=Configuration.y_start;
         this.width =Configuration.width;
         this.height =Configuration.height;

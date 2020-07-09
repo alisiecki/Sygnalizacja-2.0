@@ -11,6 +11,12 @@ import java.io.IOException;
 import java.util.Properties;
 
 
+
+//Konstrukcja okna aplikacji, uruchomienie w konstruktorze modułów Configuration, Language
+//oraz modułu głownego - screenshootChecker.
+
+
+
 public class Console {
 
 
@@ -20,7 +26,7 @@ public class Console {
 
     public static JFrame frame;
     public static JLabel lb;
-    public static JLabel temperature;
+    public static JLabel mainInformationForUserTextField;
     private JMenuBar menuBar;
     private Button buttonRun;
     private Button buttonAbout;
@@ -73,10 +79,10 @@ public class Console {
         frame.getContentPane().add(lb);
         lb.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        temperature = new JLabel(language.SECOND_LABEL);
-        temperature.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        frame.getContentPane().add(temperature);
-        temperature.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainInformationForUserTextField = new JLabel(language.SECOND_LABEL);
+        mainInformationForUserTextField.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        frame.getContentPane().add(mainInformationForUserTextField);
+        mainInformationForUserTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
         //Buttons in MenuBar
@@ -150,7 +156,7 @@ public class Console {
                 prop.setProperty("x_start", String.valueOf(r.x));
                 prop.setProperty("y_start", String.valueOf(r.y));
                 prop.setProperty("cropped_height", String.valueOf(r.height));
-                prop.setProperty("cropped_weight", String.valueOf(r.width));
+                prop.setProperty("cropped_width", String.valueOf(r.width));
                 prop.setProperty("precision", "+/- 10px");
 
                 try {

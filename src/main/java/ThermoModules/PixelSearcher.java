@@ -4,6 +4,6 @@ import java.awt.image.BufferedImage;
 
 public interface PixelSearcher {
 
-    int przeszukajScreenshot(BufferedImage bufferedImage);
+    int searchForGivenPixel(BufferedImage bufferedImage);
 
 }

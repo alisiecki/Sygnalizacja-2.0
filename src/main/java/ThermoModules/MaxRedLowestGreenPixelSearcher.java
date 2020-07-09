@@ -3,7 +3,6 @@ package ThermoModules;
 import Main.Console;
 
 import javax.imageio.ImageIO;
-import javax.security.auth.login.Configuration;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -13,51 +12,74 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 
-//Miarka czerwono-żółta.
-//Znajdowanie najbardziej czerwonego pixela w obrazie, obliczanie średniej z poprzednich wyników, screenshoty, zapis danych RGB do txt, 
-//konwertowanie wartości pixelowej na wartość temperaturową. Aktualnie brak wysyłania sygnałów 0,1 do Blinkera.
+
+// Opis modułu:
+
+// Moduł służy do wykrywania podwyższonej temperatury człowieka znajdującego się
+// w świetle kamery termowizyjnej.
+
+
+
 
 //Więcej:
-//Algorytm przeszukuje obraz pixel po pixelu w poszukiwaniu koloru, którego atrybuty RGB = (255,minimum,dowolne).
-//Atrybut B jest dowolny ponieważ RGB=(255,0,0) to kolor czerwony, a RGB=(255,0,255) to kolor fioletowy niewystępujący w
-//obrazach źródłowych.
-//Zmienna "isManFind" to flaga oznaczajaca, ze w zbiorze pixelów znaleziono kolor przyporządkowany człowiekowi.
+
+// Funkcja searchForGivenPixel() - odpowiada za przeszukanie wszystkich pixeli w obrazie, określenie czy znaleziony został piksel
+// bliski czerwonemu (zmienna "isManFound") oraz odczytanie paramentrów najbardziej czerwonego
+// piksela (zmienna "maxRedLowestGreen"). Funkcja zwraca wartości:
+// 0 - gdy na obrazie znajduje sie człowiek oraz zadana tolerancja zostanie przekroczona,
+// 1 - gdy na obrazie znajduje się człowiek oraz tolerancja nie została przekroczona,
+// 2 - gdy na obrazie nie znajduje się człowiek.
+
+// Funkcja updateAvarage() -  odpowiada za ciągłe aktualizowanie
+// średniej temperatury badanych jednostek, która zmienia się w ciągu dnia. Przekroczenie
+// średniej o zadaną wartość sygnalizowane jest kolorem czerwonym, a wynik nie jest wliczany do średniej.
+
+// Funkcja saveDataToFiles() - odpowiada za zapis zdjec, godziny i wartosci maxRedLowestGreen do plikow bmp i txt.
+
+
+
+
+// Jeszcze więcej:
+
+// Zakres kolorów obrazu: niebiesko-żółto-czerwony.
+// Algorytm przeszukuje obraz pixel po pixelu w poszukiwaniu koloru, którego atrybuty RGB są równe (255,minimum,dowolne).
+// Atrybut B jest dowolny ponieważ RGB=(255,0,0) to kolor czerwony, a RGB=(255,0,255) to kolor fioletowy niewystępujący w
+// obrazach źródłowych.
+// Zmienna "isManFind" to flaga oznaczajaca, ze w zbiorze pixelów znaleziono kolor odpowiadający człowiekowi na termogramie.
 // "isManFind"=true pozwala uruchamiać kod drukujący obraz do folderu "./TestTemperatury" oraz txt z danymi.
-//
+
 
 
 
 public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
 
-    //zmienna dla przeszukiwania pixeli.
-    Color mycolor;
+    // Zmienne dla funkcji searchGivenPixel().
+    Color pixelSearched;
+    boolean isManFound;
+    int maxRedLowestGreen;
 
-    //zmienne dla wyszukiwania człowieka i najbardziej czerwonego punktu.
-    boolean isManFind;
-    int lowestGreen;
-
-    //zmienne dla funkcji updateAverage.
+    // Zmienne dla funkcji updateAverage().
     Double average;
     int howManySamplesForAverage;
     Double sum;
-    Queue<Integer> q;
+    Queue<Integer> samplesQueue;
 
-    //zmienne dla funkcji convertPixelToTemperature.
-    Double d,w,licznik, mianownik,first;
-    DecimalFormat df;
+    // Zmienne dla funkcji convertPixelToTemperature().
+    Double result, number, nominator, denominator,first;
+    DecimalFormat rounding;
 
-    //zmienne dla modulu Fota+Celsjusz w folderze
+    // Zmienne dla funkcji saveDataToFiles().
     int iterator_for_isManFound_screenshots;
 
 
 
     public MaxRedLowestGreenPixelSearcher(){
 
-        mycolor=null;
-	    average=0.0; //unikniecie NullPointException
+        pixelSearched =null;
+	    average=0.0;
 	    howManySamplesForAverage=7;
-	    q = new LinkedList<>();
-	    df = new DecimalFormat("0.00");
+	    samplesQueue = new LinkedList<>();
+	    rounding = new DecimalFormat("0.00");
 	    iterator_for_isManFound_screenshots=0;
 
 
@@ -65,57 +87,45 @@ public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
 
 
     @Override
-    public int przeszukajScreenshot(BufferedImage cropped_capture) {
+    public int searchForGivenPixel(BufferedImage cropped_capture) {
 
 
-        //Przygotownie wartości początkowych przed przeszukowiwaniem.
-        isManFind=false;
-        lowestGreen=255;
+        isManFound =false;
+        maxRedLowestGreen =255;
 
 
-        //Przeprocesowanie wszystkich pixeli w obrazku.
         for(int j=0; j<cropped_capture.getHeight();j=j+1) {
-
             for(int i=0; i<cropped_capture.getWidth();i=i+1) {
 
-                mycolor = new Color(cropped_capture.getRGB(i, j));
+                pixelSearched = new Color(cropped_capture.getRGB(i, j));
 
-                if(mycolor.getRed()==255) {
+                if(pixelSearched.getRed()==255) {
 
-                    //flaga "czlowiek znaleziony".
-                    isManFind=true;
+                    isManFound =true;
 
-                    //szukanie minimumGreen.
-                    if(mycolor.getGreen() < lowestGreen) {
-                        lowestGreen = mycolor.getGreen();
+                    if(pixelSearched.getGreen() < maxRedLowestGreen) {
+                        maxRedLowestGreen = pixelSearched.getGreen();
                     }
 
                 }
+
             }
         }
 
 
-        //Drukowanie zdjec. Drukowanie godziny i wartosci minimumGreen dla danego screenshot'a w pliku txt.
-        if(isManFind==true) {
 
-            try {
-                iterator_for_isManFound_screenshots++;
-                ImageIO.write(cropped_capture, "bmp", new File("./TestTemperatury/manFound_screenshoot_"+iterator_for_isManFound_screenshots+".bmp"));
+        if(isManFound ==true) {
 
-                PrintWriter writer = new PrintWriter(new FileWriter("./TestTemperatury/CelsjuszTest.txt", true));
-                writer.println(LocalDateTime.now()+ " rGb: " +lowestGreen);
-                writer.close();
+            saveDataToFiles(cropped_capture);
 
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(maxRedLowestGreen <average-50){
+                return 0;
             }
-
-
+            else{
+                updateAverage(maxRedLowestGreen);
+                return 1;
+            }
         }
-
-
-        //Implementacja średniej.
-        updateAverage(lowestGreen);
 
         return 2;
     }
@@ -127,18 +137,17 @@ public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
 
         sum=0.0;
 
-        if(q.size()==howManySamplesForAverage)
-            q.remove();
-        q.add(maxRedLowestGreen);
+        if(samplesQueue.size()==howManySamplesForAverage)
+            samplesQueue.remove();
+        samplesQueue.add(maxRedLowestGreen);
 
-        for (Integer integer : q) {
+        for (Integer integer : samplesQueue) {
             sum = sum + integer;
         }
-        System.out.println("Average: "+ sum/q.size() + "   Content:" + q);
-        average = sum/q.size();
 
-        //wyswietlanie w LABELACH informacji o sredniej itd.
-        Console.temperature.setText("Kolejka w px:" + q +" Ostatnia temp:" + convertPixelToTemperature((double) maxRedLowestGreen)+ " Average: "+ convertPixelToTemperature(sum/q.size()));
+        average = sum/ samplesQueue.size();
+
+        Console.mainInformationForUserTextField.setText("Source for average[px]:" + samplesQueue +" Last temp:" + convertPixelToTemperature((double) maxRedLowestGreen)+ " Average[°C]: "+ convertPixelToTemperature(sum/ samplesQueue.size()));
 
 
     }
@@ -147,27 +156,36 @@ public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
 
     public String convertPixelToTemperature(Double maxRedLowestGreen){
 
-
-        if(maxRedLowestGreen<120){
-            w=maxRedLowestGreen/19690520;
-            mianownik=Math.pow(w,1.077747)+1;
-            licznik=(39.95048 - -997907.2);
-            first=-997907.2;
-
-
-        }
-        else{
-            w=maxRedLowestGreen/500.7978;
-            mianownik=Math.pow(w,1.366587)+1;
-            licznik=(42.03134 - 9.085402);
+            number = maxRedLowestGreen/500.7978;
+            denominator = Math.pow(number,1.366587)+1;
+            nominator = (42.03134 - 9.085402);
             first=9.085402;
 
+        result = first + nominator / denominator;
+
+
+        return rounding.format(result);
+    }
+
+
+    public void saveDataToFiles(BufferedImage cropped_capture){
+
+        try {
+            iterator_for_isManFound_screenshots++;
+            ImageIO.write(cropped_capture, "bmp", new File("./TestTemperatury/manFound_screenshoot_"+iterator_for_isManFound_screenshots+".bmp"));
+
+            PrintWriter writer = new PrintWriter(new FileWriter("./TestTemperatury/CelsjuszTest.txt", true));
+            writer.println(LocalDateTime.now()+ " rGb: " + maxRedLowestGreen);
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        d=first+licznik/mianownik;
 
 
-        return df.format(d);
+
+
     }
 
 

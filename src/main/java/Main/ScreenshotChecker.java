@@ -3,29 +3,39 @@ package Main;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
+import ThermoModules.MaxRedLowestGreenPixelSearcher;
 import ThermoModules.PixelSearcher;
-import ThermoModules.WhitePixelSearcher;
 
+
+// Moduł obsługujący proces składający sie na:
+// 1.wykonanie zrzutu ekranu - podmoduł ScreenshotMaker
+// 2.przeszukanie zrzutu ekranu - odpowiedni podmoduł implementujący interfejs PixelSearcher
+// 3.odpowiednia sygnalizacja - podmoduł Blinker
+//
+// Moduł ScreenshotChecker uzywa klasy Timer oraz interfejsu TimerTask do powtarzania
+// powyższego procesu co 2 sekundy. Towarzyszy mu zmieniający sie równolegle tekst
+// informujący o nieprzerwanym działaniu programu.
 
 
 public class ScreenshotChecker {
 
-    Timer timer;
-    ScreenshotMaker sm;
     PixelSearcher pixelSearcher;
+    Timer timer;
+    ScreenshotMaker screenshotMaker;
     Blinker blinker;
+
 
     boolean isTimerRun = false;
     int iterator_for_working_text=0;
 
 
 
+
     public ScreenshotChecker(){
 
-      sm = new ScreenshotMaker();
-      pixelSearcher = new WhitePixelSearcher();
-      blinker = new Blinker();
+        pixelSearcher = new MaxRedLowestGreenPixelSearcher();
+        screenshotMaker = new ScreenshotMaker();
+        blinker = new Blinker();
 
     }
 
@@ -35,8 +45,7 @@ public class ScreenshotChecker {
         @Override
         public void run() {
 
-            //zamrugajOdpowiednio //przeszukajScreenshoot  //takeScreenshoot
-            blinker.mrugaj(pixelSearcher.przeszukajScreenshot(sm.takeScreenshot()));
+            blinker.blink(pixelSearcher.searchForGivenPixel(screenshotMaker.takeScreenshot()));
             showThatProgramIsRunning();
 
         }

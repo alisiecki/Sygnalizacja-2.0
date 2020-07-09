@@ -5,15 +5,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+
+//Klasa obsługująca załądowanie ustawień początkowych tj. lokalizacji i rozmiaru odczytywanego
+//obrazu oraz używany port.
+
+
 public class Configuration {
-
-
 
 
     static int x_start, y_start, width, height;
     static String port;
-
-
 
 
 
