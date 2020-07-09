@@ -38,3 +38,8 @@ ScreenshotMaker - Klasa obsługująca tworzenie zrzutu ekranu.
 
 WhiteCheckPixelSearcher - Moduł służy do przeszukiwania obrazu i znajdowania piksela o zadanych parametrach.
 
+
+To do:
+- uporządkowanie modyfikatorów dostępu
+- uporządkowanie projektu odpowiednim wzorcem projektowym
+- aktualizacja informacji o temperaturze w przypadku przekroczenia tolerancji
