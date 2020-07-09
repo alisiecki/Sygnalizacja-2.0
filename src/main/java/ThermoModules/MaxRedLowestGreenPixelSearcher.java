@@ -1,5 +1,6 @@
 package ThermoModules;
 
+import Main.AverageManager;
 import Main.Console;
 
 import javax.imageio.ImageIO;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import static Main.PixelToTemperatureConverter.convertPixelToTemperature;
 
 
 // Opis modułu:
@@ -71,6 +73,8 @@ public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
     // Zmienne dla funkcji saveDataToFiles().
     int iterator_for_isManFound_screenshots;
 
+    AverageManager averageManager;
+
 
 
     public MaxRedLowestGreenPixelSearcher(){
@@ -81,6 +85,8 @@ public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
 	    samplesQueue = new LinkedList<>();
 	    rounding = new DecimalFormat("0.00");
 	    iterator_for_isManFound_screenshots=0;
+
+        averageManager = new AverageManager(7);
 
 
     }
@@ -118,11 +124,11 @@ public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
 
             saveDataToFiles(cropped_capture);
 
-            if(maxRedLowestGreen <average-50){
+            if(maxRedLowestGreen <averageManager.getAverage()-50){
                 return 0;
             }
             else{
-                updateAverage(maxRedLowestGreen);
+                averageManager.updateAverage(maxRedLowestGreen);
                 return 1;
             }
         }
@@ -140,6 +146,7 @@ public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
         if(samplesQueue.size()==howManySamplesForAverage)
             samplesQueue.remove();
         samplesQueue.add(maxRedLowestGreen);
+
 
         for (Integer integer : samplesQueue) {
             sum = sum + integer;
