@@ -136,43 +136,7 @@ public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
         return 2;
     }
 
-
-
-
-    public void updateAverage(int maxRedLowestGreen){
-
-        sum=0.0;
-
-        if(samplesQueue.size()==howManySamplesForAverage)
-            samplesQueue.remove();
-        samplesQueue.add(maxRedLowestGreen);
-
-
-        for (Integer integer : samplesQueue) {
-            sum = sum + integer;
-        }
-
-        average = sum/ samplesQueue.size();
-
-        Console.mainInformationForUserTextField.setText("Source for average[px]:" + samplesQueue +" Last temp:" + convertPixelToTemperature((double) maxRedLowestGreen)+ " Average[°C]: "+ convertPixelToTemperature(sum/ samplesQueue.size()));
-
-
-    }
-
-
-
-    public String convertPixelToTemperature(Double maxRedLowestGreen){
-
-            number = maxRedLowestGreen/500.7978;
-            denominator = Math.pow(number,1.366587)+1;
-            nominator = (42.03134 - 9.085402);
-            first=9.085402;
-
-        result = first + nominator / denominator;
-
-
-        return rounding.format(result);
-    }
+    
 
 
     public void saveDataToFiles(BufferedImage cropped_capture){
