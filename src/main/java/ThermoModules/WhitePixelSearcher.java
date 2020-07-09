@@ -4,8 +4,8 @@ import Main.Console;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-// Opis modułu:
-// Moduł służy do wyszukiwania w dostarczonym obrazie piksela o zadanych wartościach red, green i blue.
+// Moduł WhitePixelSearcher wyszukuje w dostarczonym obrazie piksela o atrybutach [255,255,255].
+// W zależności od wyniku, funkcja searchForGivenPixel() zwraca wartość 0 lub 1.
 
 
 public class WhitePixelSearcher implements PixelSearcher{
@@ -33,8 +33,6 @@ public class WhitePixelSearcher implements PixelSearcher{
                     Console.mainInformationForUserTextField.setText("ALERT: RGB=(255,255,255) found");
                     return 0;
                 }
-
-
             }
         }
         Console.mainInformationForUserTextField.setText("Searching for RGB=(255,255,255)");

@@ -12,6 +12,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 import static Main.PixelToTemperatureConverter.convertPixelToTemperature;
 
+//Moduł obsługuje mechanizm średniej dla modułu MaxRedLowestGreenPixelSearcher oraz zapis wybranych danych do pliku.
+
+
 public class UtilitiesManager {
 
     Double averageTest;
@@ -32,9 +35,7 @@ public class UtilitiesManager {
         return averageTest;
     }
 
-
-
-
+    //Srednia obliczana jest na podstawie stałej liczby ostatnich wywołań funkcji.
     public void updateAverage(int maxRedLowestGreen) {
 
         this.sum = 0.0;
@@ -55,11 +56,7 @@ public class UtilitiesManager {
     }
 
 
-
-
-
     int iterator_for_manFound_screenshots = 0;
-
     public void saveDataToFiles(BufferedImage cropped_capture, int maxRedLowestGreen) {
 
         try {

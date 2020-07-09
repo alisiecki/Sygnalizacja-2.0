@@ -8,7 +8,7 @@ import java.awt.*;
 
 // Klasa obsługuje połączenie z przekaźnikiem AVT sterującym danym urządzeniem zewnętrznym, najczęsciej
 // czerwono-zieloną sygnalizacją świetlną. Rownolegle zmienia także kolor tła w oknie aplikacji.
-// Dostarczenie liczb do funkcji "blink" uruchamia kolejno:
+// Dostarczenie liczb do funkcji blink() uruchamia kolejno:
 // 0 - kolor czerwony
 // 1 - kolor zielony
 // 2 - brak reakcji

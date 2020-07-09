@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 
-//Klasa obsługująca załądowanie ustawień początkowych tj. lokalizacji i rozmiaru odczytywanego
+//Klasa obsługująca import ustawień początkowych tj. lokalizacji i rozmiaru odczytywanego
 //obrazu oraz używany port.
 
 
