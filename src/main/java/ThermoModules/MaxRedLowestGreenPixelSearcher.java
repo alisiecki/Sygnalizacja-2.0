@@ -60,15 +60,6 @@ public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
     boolean isManFound;
     int maxRedLowestGreen;
 
-    // Zmienne dla funkcji updateAverage().
-    Double average;
-    int howManySamplesForAverage;
-    Double sum;
-    Queue<Integer> samplesQueue;
-
-    // Zmienne dla funkcji convertPixelToTemperature().
-    Double result, number, nominator, denominator,first;
-    DecimalFormat rounding;
 
     // Zmienne dla funkcji saveDataToFiles().
     int iterator_for_isManFound_screenshots;
@@ -80,10 +71,6 @@ public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
     public MaxRedLowestGreenPixelSearcher(){
 
         pixelSearched =null;
-	    average=0.0;
-	    howManySamplesForAverage=7;
-	    samplesQueue = new LinkedList<>();
-	    rounding = new DecimalFormat("0.00");
 	    iterator_for_isManFound_screenshots=0;
 
         averageManager = new AverageManager(7);
@@ -136,7 +123,7 @@ public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
         return 2;
     }
 
-    
+
 
 
     public void saveDataToFiles(BufferedImage cropped_capture){
