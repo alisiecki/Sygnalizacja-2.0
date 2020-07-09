@@ -7,6 +7,8 @@ Ideą stojącą za tworzeniem projektu jest stworzenie narzędzia do wykrywania 
 
 Plik jar umożlwiający uruchomienie znajduje się pod scieżką out\artifacts\Sygnalizacja_2_0_jar.
 
+Link do filmu demonstracyjnego: https://www.youtube.com/watch?v=G1a3qlFjB2c
+
 
 
 
