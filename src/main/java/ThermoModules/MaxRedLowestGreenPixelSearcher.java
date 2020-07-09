@@ -1,18 +1,9 @@
 package ThermoModules;
 
-import Main.AverageManager;
-import Main.Console;
-
-import javax.imageio.ImageIO;
+import Main.UtilitiesManager;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.text.DecimalFormat;
-import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.Queue;
 
-import static Main.PixelToTemperatureConverter.convertPixelToTemperature;
 
 
 // Opis modułu:
@@ -36,7 +27,7 @@ import static Main.PixelToTemperatureConverter.convertPixelToTemperature;
 // średniej temperatury badanych jednostek, która zmienia się w ciągu dnia. Przekroczenie
 // średniej o zadaną wartość sygnalizowane jest kolorem czerwonym, a wynik nie jest wliczany do średniej.
 
-// Funkcja saveDataToFiles() - odpowiada za zapis zdjec, godziny i wartosci maxRedLowestGreen do plikow bmp i txt.
+
 
 
 
@@ -55,27 +46,18 @@ import static Main.PixelToTemperatureConverter.convertPixelToTemperature;
 
 public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
 
-    // Zmienne dla funkcji searchGivenPixel().
+
     Color pixelSearched;
     boolean isManFound;
     int maxRedLowestGreen;
 
 
-    // Zmienne dla funkcji saveDataToFiles().
-    int iterator_for_isManFound_screenshots;
-
-    AverageManager averageManager;
-
+    UtilitiesManager utilitiesManager;
 
 
     public MaxRedLowestGreenPixelSearcher(){
-
         pixelSearched =null;
-	    iterator_for_isManFound_screenshots=0;
-
-        averageManager = new AverageManager(7);
-
-
+        utilitiesManager = new UtilitiesManager(7);
     }
 
 
@@ -109,43 +91,18 @@ public class MaxRedLowestGreenPixelSearcher implements PixelSearcher {
 
         if(isManFound ==true) {
 
-            saveDataToFiles(cropped_capture);
+            utilitiesManager.saveDataToFiles(cropped_capture, maxRedLowestGreen);
 
-            if(maxRedLowestGreen <averageManager.getAverage()-50){
+            if(maxRedLowestGreen < utilitiesManager.getAverage()-50){
                 return 0;
             }
             else{
-                averageManager.updateAverage(maxRedLowestGreen);
+                utilitiesManager.updateAverage(maxRedLowestGreen);
                 return 1;
             }
         }
 
         return 2;
     }
-
-
-
-
-    public void saveDataToFiles(BufferedImage cropped_capture){
-
-        try {
-            iterator_for_isManFound_screenshots++;
-            ImageIO.write(cropped_capture, "bmp", new File("./TestTemperatury/manFound_screenshoot_"+iterator_for_isManFound_screenshots+".bmp"));
-
-            PrintWriter writer = new PrintWriter(new FileWriter("./TestTemperatury/CelsjuszTest.txt", true));
-            writer.println(LocalDateTime.now()+ " rGb: " + maxRedLowestGreen);
-            writer.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-
-
-
-    }
-
-
 
 }
